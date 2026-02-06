@@ -111,11 +111,11 @@ interface ContentSearchResponse {
                 <!-- Charts Row -->
                 <div class="charts-grid">
                     <p-card header="Content by Type">
-                        <p-chart type="bar" [data]="contentByTypeData" [options]="barOptions" />
+                        <p-chart type="bar" [data]="contentByTypeData" [options]="barOptions" height="350" />
                     </p-card>
 
                     <p-card header="Content by Status">
-                        <p-chart type="doughnut" [data]="contentByStatusData" [options]="doughnutOptions" />
+                        <p-chart type="doughnut" [data]="contentByStatusData" [options]="doughnutOptions" height="350" />
                     </p-card>
                 </div>
 
@@ -128,20 +128,21 @@ interface ContentSearchResponse {
                         [rowsPerPageOptions]="[5, 10, 25]"
                         [showCurrentPageReport]="true"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
-                        [tableStyle]="{ 'min-width': '50rem' }"
+                        [responsive]="true"
+                        [scrollable]="true"
                     >
                         <ng-template #header>
                             <tr>
-                                <th pSortableColumn="title">
+                                <th pSortableColumn="title" style="min-width: 12rem">
                                     Title <p-sortIcon field="title" />
                                 </th>
-                                <th pSortableColumn="contentType">
+                                <th pSortableColumn="contentType" style="min-width: 10rem">
                                     Content Type <p-sortIcon field="contentType" />
                                 </th>
-                                <th pSortableColumn="modDate">
+                                <th pSortableColumn="modDate" style="min-width: 10rem">
                                     Modified <p-sortIcon field="modDate" />
                                 </th>
-                                <th>Status</th>
+                                <th style="min-width: 7rem">Status</th>
                             </tr>
                         </ng-template>
                         <ng-template #body let-item>
@@ -169,9 +170,15 @@ interface ContentSearchResponse {
     `,
     styles: [
         `
+            :host {
+                display: block;
+                width: 100%;
+            }
+
             .dashboard {
                 max-width: 1400px;
                 margin: 0 auto;
+                padding: 0 1rem;
             }
 
             .dashboard-header {
@@ -179,6 +186,8 @@ interface ContentSearchResponse {
                 justify-content: space-between;
                 align-items: center;
                 margin-bottom: 1.5rem;
+                flex-wrap: wrap;
+                gap: 0.75rem;
             }
 
             .dashboard-header h1 {
@@ -205,7 +214,7 @@ interface ContentSearchResponse {
 
             .stats-grid {
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                 gap: 1rem;
                 margin-bottom: 1.5rem;
             }
@@ -235,10 +244,11 @@ interface ContentSearchResponse {
 
             .charts-grid {
                 display: grid;
-                grid-template-columns: 3fr 2fr;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
                 gap: 1rem;
                 margin-bottom: 1.5rem;
             }
+
 
             .empty-message {
                 text-align: center;
@@ -246,25 +256,21 @@ interface ContentSearchResponse {
                 color: #64748b;
             }
 
-            @media (max-width: 1024px) {
-                .stats-grid {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-
-                .charts-grid {
-                    grid-template-columns: 1fr;
-                }
-            }
-
             @media (max-width: 640px) {
-                .stats-grid {
-                    grid-template-columns: 1fr;
+                .dashboard {
+                    padding: 0 0.5rem;
                 }
 
-                .dashboard-header {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 1rem;
+                .dashboard-header h1 {
+                    font-size: 1.25rem;
+                }
+
+                .stat-icon {
+                    font-size: 1.5rem;
+                }
+
+                .stat-value {
+                    font-size: 1.25rem;
                 }
             }
         `,
@@ -286,7 +292,7 @@ export class DashboardComponent implements OnInit {
 
     barOptions = {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: { display: false },
         },
@@ -300,7 +306,7 @@ export class DashboardComponent implements OnInit {
 
     doughnutOptions = {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: { position: 'bottom' as const },
         },

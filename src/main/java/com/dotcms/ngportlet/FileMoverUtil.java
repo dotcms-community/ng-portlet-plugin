@@ -27,7 +27,7 @@ public class FileMoverUtil {
     * PORTLET_INSTALL_PATH has got to match the angular-module path in your portlet.xml
     */
     private  static final String srcDirectoryInJar = "/frontend";
-    private static final File destDirectoryInWar = new File(FileUtil.getRealPath("/dotAdmin/plugins/ng-portlet"));
+    private static final File destDirectoryInWar = new File(FileUtil.getRealPath("/dotAdmin/plugins/" + Activator.PORTLET_ID));
 
 
    private static List<JarEntry> listFilesInFrontend() {
