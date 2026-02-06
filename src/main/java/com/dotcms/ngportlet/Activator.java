@@ -1,17 +1,15 @@
 package com.dotcms.ngportlet;
 
 import com.dotmarketing.business.APILocator;
+import com.dotmarketing.business.Layout;
 import com.dotmarketing.exception.DotDataException;
 import com.dotmarketing.osgi.GenericBundleActivator;
-import com.dotmarketing.business.Layout;
 import io.vavr.control.Try;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.osgi.framework.BundleContext;
 
 public class Activator extends GenericBundleActivator {
@@ -35,8 +33,8 @@ public class Activator extends GenericBundleActivator {
         String[] xmls = new String[]{"conf/portlet.xml"};
         registerPortlets( context, xmls );
 
-        // add the portlet to Tools layout
-        for (Layout layout : findTheToolsLayout()) {
+        // add the portlet to Content layout
+        for (Layout layout : findTheContentLayout()) {
             List<String> portletIds = new ArrayList<>(layout.getPortletIds());
             if(portletIds.contains(PORTLET_ID)){
                 continue;
@@ -46,7 +44,8 @@ public class Activator extends GenericBundleActivator {
         }
 
     }
-    private List<Layout> findTheToolsLayout() throws DotDataException {
+
+    private List<Layout> findTheContentLayout() throws DotDataException {
         String[] portlets = {"content"};
         List<Layout> addToLayouts = new ArrayList<>();
         List<Layout> layouts = APILocator.getLayoutAPI().findAllLayouts();
