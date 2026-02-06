@@ -1,14 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
-import { Card } from 'primeng/card';
-import { ChartModule } from 'primeng/chart';
-import { TableModule } from 'primeng/table';
-import { Tag } from 'primeng/tag';
-import { Button } from 'primeng/button';
-import { ProgressSpinner } from 'primeng/progressspinner';
+import {CommonModule} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {Component, inject, OnInit} from '@angular/core';
+import {Card} from 'primeng/card';
+import {ChartModule} from 'primeng/chart';
+import {TableModule} from 'primeng/table';
+import {Tag} from 'primeng/tag';
+import {Button} from 'primeng/button';
+import {ProgressSpinner} from 'primeng/progressspinner';
 
-import { PluginNavService } from '../../shared/plugin-nav.service';
+import {PluginNavService} from '../../shared/plugin-nav.service';
 
 interface ContentItem {
     title: string;
@@ -18,6 +18,7 @@ interface ContentItem {
     working: boolean;
     archived: boolean;
     identifier: string;
+    inode: string;
 }
 
 interface ContentSearchResponse {
@@ -114,7 +115,8 @@ interface ContentSearchResponse {
                 <!-- Charts Row -->
                 <div class="charts-grid">
                     <p-card header="Content by Type">
-                        <p-chart type="bar" [data]="contentByTypeData" [options]="barOptions" height="350" />
+                        <p-chart type="bar" [data]="contentByTypeData" [options]="barOptions" height="350"
+                                 (onDataSelect)="onBarClick($event)"/>
                     </p-card>
 
                     <p-card header="Content by Status">
@@ -149,7 +151,7 @@ interface ContentSearchResponse {
                             </tr>
                         </ng-template>
                         <ng-template #body let-item>
-                            <tr>
+                            <tr class="content-row" (click)="openContent(item)">
                                 <td>{{ item.title }}</td>
                                 <td>{{ item.contentType }}</td>
                                 <td>{{ item.modDate | date: 'medium' }}</td>
@@ -249,6 +251,14 @@ interface ContentSearchResponse {
             }
 
 
+            .content-row {
+                cursor: pointer;
+            }
+
+            .content-row:hover td {
+                background: #f1f5f9;
+            }
+
             .empty-message {
                 text-align: center;
                 padding: 2rem;
@@ -302,6 +312,12 @@ export class DashboardComponent implements OnInit {
                 ticks: { precision: 0 },
             },
         },
+        onHover: (event: { native?: { target?: HTMLElement } }) => {
+            const target = event.native?.target;
+            if (target) {
+                target.style.cursor = 'pointer';
+            }
+        },
     };
 
     doughnutOptions = {
@@ -347,6 +363,19 @@ export class DashboardComponent implements OnInit {
 
     refreshData(): void {
         this.loadData();
+    }
+
+    openContent(item: ContentItem): void {
+        window.location.href = `/dotAdmin/#/content/${item.inode}`;
+    }
+
+    onBarClick(event: { element?: { index?: number }; dataset?: { data?: number[] } }): void {
+        const index = event.element?.index;
+        const data = this.contentByTypeData as { labels?: string[] };
+        if (index !== undefined && data.labels?.[index]) {
+            const contentType = data.labels[index];
+            window.location.href = `/dotAdmin/#/content-drive?isTreeExpanded=true&filters=contentType:${contentType}`;
+        }
     }
 
     getStatus(item: ContentItem): string {
