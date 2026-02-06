@@ -1,0 +1,94 @@
+{
+    "name": "ng-portlet",
+    "$schema": "node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "prefix": "plugin",
+    "sourceRoot": "src",
+    "tags": ["type:app", "scope:plugin"],
+    "targets": {
+        "build": {
+            "executor": "@nx/angular:webpack-browser",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/ng-portlet",
+                "index": "src/index.html",
+                "main": "src/main.ts",
+                "polyfills": ["zone.js"],
+                "tsConfig": "tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": ["src/favicon.ico", "src/assets"],
+                "styles": ["src/styles.scss"],
+                "scripts": [],
+                "customWebpackConfig": {
+                    "path": "webpack.config.ts"
+                }
+            },
+            "configurations": {
+                "production": {
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "500kb",
+                            "maximumError": "1mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "2kb",
+                            "maximumError": "4kb"
+                        }
+                    ],
+                    "outputHashing": "all"
+                },
+                "development": {
+                    "optimization": false,
+                    "extractLicenses": false,
+                    "sourceMap": true
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "serve": {
+            "executor": "@nx/angular:dev-server",
+            "options": {
+                "buildTarget": "ng-portlet:build:development",
+                "port": 4201,
+                "host": "0.0.0.0",
+                "ssl": true,
+                "disableHostCheck": true,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "*"
+                }
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "ng-portlet:build:production"
+                },
+                "development": {
+                    "buildTarget": "ng-portlet:build:development"
+                }
+            },
+            "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "buildTarget": "ng-portlet:build"
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/{projectName}"],
+            "options": {
+                "jestConfig": "jest.config.ts"
+            }
+        }
+    }
+}

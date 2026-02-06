@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<portlet-app>
+    <portlet>
+        <portlet-name>ng-portlet</portlet-name>
+        <display-name>Angular Portlet</display-name>
+        <portlet-class>com.dotcms.spring.portlet.PortletController</portlet-class>
+        <portlet-url>/ng-portlet</portlet-url>
+        <init-param>
+            <name>angular-module</name>
+            <!--
+                Format: remote:<remoteEntry URL>|<remoteName>|<exposedModule>
+
+                For development (local dev server):
+                <value>remote:https://localhost:4201/remoteEntry.js|ng_portlet|./Routes</value>
+
+                For production (deployed to dotCMS static folder):
+                <value>remote:/html/plugins/ng-portlet/remoteEntry.js|ng_portlet|./Routes</value>
+            -->
+            <value>remote:/dotAdmin/plugins/ng-portlet/remoteEntry.js|ng_portlet|./Routes</value>
+        </init-param>
+    </portlet>
+
+</portlet-app>
