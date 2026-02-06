@@ -1,6 +1,9 @@
 # dotCMS Angular Portlet Plugin
 
-A dotCMS OSGi plugin that delivers a custom Angular portlet using Webpack Module Federation. The plugin bundles an Angular frontend as a federated remote module, deploys it into dotCMS at runtime, and registers a portlet that loads the Angular app inside the dotCMS admin backend.
+This is a dotCMS OSGi plugin that delivers a custom Angular portlet using Webpack Module Federation. The plugin bundles an Angular frontend as a federated remote module, deploys it into dotCMS at runtime, and registers a portlet that loads the Angular app inside the dotCMS admin backend.
+
+<img width="50%" alt="image" src="https://github.com/user-attachments/assets/5c3745bd-3075-4918-8cf7-f340f29223ff" />
+
 
 ## How It Works
 
@@ -10,6 +13,7 @@ A dotCMS OSGi plugin that delivers a custom Angular portlet using Webpack Module
 4. **Undeploy** -- When the bundle stops, the activator unregisters the portlet and deletes the deployed frontend files.
 
 ## Project Structure
+
 
 ```
 .
