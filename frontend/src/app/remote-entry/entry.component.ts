@@ -1,18 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+
+import { DashboardComponent } from '../features/dashboard/dashboard.component';
+import { SettingsComponent } from '../features/settings/settings.component';
+import { PluginNavService } from '../shared/plugin-nav.service';
 
 /**
  * Shell component for the remote module.
- * This wraps the plugin's feature components.
+ * Switches between views using the PluginNavService signal.
  */
 @Component({
     selector: 'plugin-remote-entry',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [DashboardComponent, SettingsComponent],
+    providers: [PluginNavService],
     template: `
         <div class="plugin-container">
-            <router-outlet></router-outlet>
+            @if (nav.currentView() === 'settings') {
+                <plugin-settings />
+            } @else {
+                <plugin-dashboard />
+            }
         </div>
     `,
     styles: [
@@ -24,4 +31,6 @@ import { RouterModule } from '@angular/router';
         `,
     ],
 })
-export class RemoteEntryComponent {}
+export class RemoteEntryComponent {
+    protected nav = inject(PluginNavService);
+}

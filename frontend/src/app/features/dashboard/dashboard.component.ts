@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { Card } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { Button } from 'primeng/button';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { forkJoin } from 'rxjs';
+
+import { PluginNavService } from '../../shared/plugin-nav.service';
 
 interface ContentItem {
     title: string;
@@ -34,7 +34,6 @@ interface ContentSearchResponse {
     standalone: true,
     imports: [
         CommonModule,
-        RouterModule,
         Card,
         ChartModule,
         TableModule,
@@ -54,9 +53,13 @@ interface ContentSearchResponse {
                         (onClick)="refreshData()"
                         [loading]="loading"
                     />
-                    <a routerLink="settings" class="settings-link">
-                        <p-button icon="pi pi-cog" label="Settings" severity="secondary" [outlined]="true" />
-                    </a>
+                    <p-button
+                        icon="pi pi-cog"
+                        label="Settings"
+                        severity="secondary"
+                        [outlined]="true"
+                        (onClick)="nav.navigate('settings')"
+                    />
                 </div>
             </div>
 
@@ -202,10 +205,6 @@ interface ContentSearchResponse {
                 align-items: center;
             }
 
-            .settings-link {
-                text-decoration: none;
-            }
-
             .loading-container {
                 display: flex;
                 justify-content: center;
@@ -277,6 +276,7 @@ interface ContentSearchResponse {
     ],
 })
 export class DashboardComponent implements OnInit {
+    protected nav = inject(PluginNavService);
     private http = inject(HttpClient);
 
     loading = true;

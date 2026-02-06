@@ -72,7 +72,7 @@ public class Activator extends GenericBundleActivator {
       unregisterPortlets();
         //Unregister all the bundle services
 
-        new FileMoverUtil().deleteFiles();
+        //new FileMoverUtil().deleteFiles();
 
 
     }

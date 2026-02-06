@@ -2,21 +2,15 @@ import { Route } from '@angular/router';
 
 /**
  * App routes for standalone development/testing.
- * When loaded as a remote module via MF, entry.routes.ts mount() is used instead.
+ * Uses RemoteEntryComponent as the shell, which handles internal
+ * view switching via PluginNavService — same as the remote module.
  */
 export const appRoutes: Route[] = [
     {
-        path: '',
+        path: '**',
         loadComponent: () =>
-            import('./features/dashboard/dashboard.component').then(
-                (m) => m.DashboardComponent
-            ),
-    },
-    {
-        path: 'settings',
-        loadComponent: () =>
-            import('./features/settings/settings.component').then(
-                (m) => m.SettingsComponent
+            import('./remote-entry/entry.component').then(
+                (m) => m.RemoteEntryComponent
             ),
     },
 ];

@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { Card } from 'primeng/card';
 import { InputText } from 'primeng/inputtext';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Button } from 'primeng/button';
+
+import { PluginNavService } from '../../shared/plugin-nav.service';
 
 @Component({
     selector: 'plugin-settings',
@@ -13,7 +14,6 @@ import { Button } from 'primeng/button';
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule,
         Card,
         InputText,
         ToggleSwitch,
@@ -22,9 +22,12 @@ import { Button } from 'primeng/button';
     template: `
         <div class="settings">
             <div class="header">
-                <a routerLink="../">
-                    <p-button icon="pi pi-arrow-left" label="Back to Dashboard" [text]="true" />
-                </a>
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Back to Dashboard"
+                    [text]="true"
+                    (onClick)="nav.navigate('dashboard')"
+                />
                 <h1>Plugin Settings</h1>
             </div>
 
@@ -71,12 +74,6 @@ import { Button } from 'primeng/button';
                 margin-bottom: 1.5rem;
             }
 
-            .header a {
-                text-decoration: none;
-                display: inline-block;
-                margin-bottom: 0.5rem;
-            }
-
             h1 {
                 margin: 0;
                 color: #1e293b;
@@ -111,6 +108,8 @@ import { Button } from 'primeng/button';
     ],
 })
 export class SettingsComponent {
+    protected nav = inject(PluginNavService);
+
     settings = {
         apiKey: '',
         enabled: true,
