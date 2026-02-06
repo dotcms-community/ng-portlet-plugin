@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(jar tf:*)"
+      "Bash(jar tf:*)",
+      "Bash(npm install:*)"
     ]
+  },
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   }
 }

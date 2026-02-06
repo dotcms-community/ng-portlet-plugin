@@ -10,12 +10,27 @@ export async function mount(
 ): Promise<() => void> {
     const { createApplication } = await import('@angular/platform-browser');
     const { provideHttpClient } = await import('@angular/common/http');
+    const { provideRouter } = await import('@angular/router');
+    const { provideAnimationsAsync } = await import(
+        '@angular/platform-browser/animations/async'
+    );
+    const { providePrimeNG } = await import('primeng/config');
+    const Aura = (await import('@primeng/themes/aura')).default;
     const { DashboardComponent } = await import(
         '../features/dashboard/dashboard.component'
     );
 
     const app = await createApplication({
-        providers: [provideHttpClient()],
+        providers: [
+            provideHttpClient(),
+            provideRouter([]),
+            provideAnimationsAsync(),
+            providePrimeNG({
+                theme: {
+                    preset: Aura,
+                },
+            }),
+        ],
     });
 
     // Create the root element matching the component's selector

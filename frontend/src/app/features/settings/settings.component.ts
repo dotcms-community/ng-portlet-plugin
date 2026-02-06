@@ -2,47 +2,63 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { Card } from 'primeng/card';
+import { InputText } from 'primeng/inputtext';
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { Button } from 'primeng/button';
 
-/**
- * Example settings component for the plugin.
- */
 @Component({
     selector: 'plugin-settings',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        Card,
+        InputText,
+        ToggleSwitch,
+        Button,
+    ],
     template: `
         <div class="settings">
             <div class="header">
-                <a routerLink="../" class="back-link">&larr; Back to Dashboard</a>
+                <a routerLink="../">
+                    <p-button icon="pi pi-arrow-left" label="Back to Dashboard" [text]="true" />
+                </a>
                 <h1>Plugin Settings</h1>
             </div>
 
-            <form (ngSubmit)="saveSettings()">
-                <div class="form-group">
-                    <label for="apiKey">API Key</label>
-                    <input
-                        id="apiKey"
-                        type="text"
-                        [(ngModel)]="settings.apiKey"
-                        name="apiKey"
-                        placeholder="Enter your API key"
-                    />
-                </div>
-
-                <div class="form-group">
-                    <label for="enabled">
+            <p-card>
+                <form (ngSubmit)="saveSettings()">
+                    <div class="form-field">
+                        <label for="apiKey">API Key</label>
                         <input
-                            id="enabled"
-                            type="checkbox"
+                            id="apiKey"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="settings.apiKey"
+                            name="apiKey"
+                            placeholder="Enter your API key"
+                            class="w-full"
+                        />
+                    </div>
+
+                    <div class="form-field toggle-field">
+                        <label for="enabled">Enable Plugin</label>
+                        <p-toggleSwitch
                             [(ngModel)]="settings.enabled"
                             name="enabled"
+                            inputId="enabled"
                         />
-                        Enable Plugin
-                    </label>
-                </div>
+                    </div>
 
-                <button type="submit">Save Settings</button>
-            </form>
+                    <p-button
+                        type="submit"
+                        icon="pi pi-save"
+                        label="Save Settings"
+                    />
+                </form>
+            </p-card>
         </div>
     `,
     styles: [
@@ -52,53 +68,44 @@ import { RouterModule } from '@angular/router';
             }
 
             .header {
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem;
             }
 
-            .back-link {
-                color: #6366f1;
+            .header a {
                 text-decoration: none;
                 display: inline-block;
-                margin-bottom: 1rem;
-            }
-
-            .back-link:hover {
-                text-decoration: underline;
+                margin-bottom: 0.5rem;
             }
 
             h1 {
                 margin: 0;
+                color: #1e293b;
+                font-size: 1.5rem;
             }
 
-            .form-group {
-                margin-bottom: 1rem;
+            .form-field {
+                margin-bottom: 1.5rem;
             }
 
-            .form-group label {
+            .form-field label {
                 display: block;
                 margin-bottom: 0.5rem;
                 font-weight: 500;
+                color: #334155;
             }
 
-            .form-group input[type='text'] {
+            .w-full {
                 width: 100%;
-                padding: 0.75rem;
-                border: 1px solid #ccc;
-                border-radius: 4px;
             }
 
-            button[type='submit'] {
-                background: #6366f1;
-                color: white;
-                border: none;
-                padding: 0.75rem 1.5rem;
-                border-radius: 4px;
-                cursor: pointer;
-                margin-top: 1rem;
+            .toggle-field {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
             }
 
-            button[type='submit']:hover {
-                background: #4f46e5;
+            .toggle-field label {
+                margin-bottom: 0;
             }
         `,
     ],

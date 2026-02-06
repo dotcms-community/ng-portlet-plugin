@@ -43,6 +43,7 @@ export default (config: Configuration): Configuration => {
                 '@angular/forms': { singleton: true, strictVersion: false, requiredVersion: 'auto' },
                 '@angular/platform-browser': { singleton: true, strictVersion: false, requiredVersion: 'auto' },
                 '@angular/animations': { singleton: true, strictVersion: false, requiredVersion: 'auto' },
+                'chart.js': { singleton: true, strictVersion: false, requiredVersion: 'auto' },
                 rxjs: { singleton: true, strictVersion: false, requiredVersion: 'auto' },
             },
         })
