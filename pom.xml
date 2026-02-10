@@ -29,7 +29,14 @@
             <version>${dotcms-core.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Add more dependencies as needed -->
+        <!--
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>1.0.0-alpha-4</version>
+            <scope>compile</scope>
+        </dependency>
+         -->
     </dependencies>
 
     <build>
@@ -104,7 +111,7 @@
                         <Bundle-Description>dotCMS - Angular Portlet Example</Bundle-Description>
                         <Bundle-DocURL>https://dotcms.com/</Bundle-DocURL>
                         <Bundle-Activator>com.dotcms.ngportlet.Activator</Bundle-Activator>
-                        <Import-Package>*</Import-Package>
+                        <Import-Package>*,!io.vavr</Import-Package>
                         <Include-Resource>{maven-resources},frontend=target/classes/frontend</Include-Resource>
                     </instructions>
                 </configuration>

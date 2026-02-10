@@ -4,7 +4,7 @@ import com.dotmarketing.business.APILocator;
 import com.dotmarketing.business.Layout;
 import com.dotmarketing.exception.DotDataException;
 import com.dotmarketing.osgi.GenericBundleActivator;
-import io.vavr.control.Try;
+import com.dotmarketing.util.Logger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,29 +14,33 @@ import org.osgi.framework.BundleContext;
 
 public class Activator extends GenericBundleActivator {
 
-    final static String PORTLET_ID="ng-portlet";
+    final static String PORTLET_ID = "ng-portlet";
 
 
-    public void start ( BundleContext context ) throws Exception {
+    public void start(BundleContext context) throws Exception {
 
         //Initializing services...
-        initializeServices ( context );
+        initializeServices(context);
         // Add language key
         final Map<String, String> keys = Map.of(
-                        com.dotcms.repackage.javax.portlet.Portlet.class.getPackage().getName() + ".title." + PORTLET_ID,
-                        "NG Portlet");
+                com.dotcms.repackage.javax.portlet.Portlet.class.getPackage().getName() + ".title." + PORTLET_ID,
+                "NG Portlet");
         APILocator.getLanguageAPI().getLanguages().forEach(l -> {
-            Try.run(() -> APILocator.getLanguageAPI().saveLanguageKeys(l, keys, new HashMap<>(), Set.of()));
+            try {
+                APILocator.getLanguageAPI().saveLanguageKeys(l, keys, new HashMap<>(), Set.of());
+            } catch (Exception e) {
+                Logger.warn(this, "Error saving language keys:" + keys);
+            }
         });
         new FileMoverUtil().copyFromJar();
         //Register our portlets
         String[] xmls = new String[]{"conf/portlet.xml"};
-        registerPortlets( context, xmls );
+        registerPortlets(context, xmls);
 
         // add the portlet to Content layout
         for (Layout layout : findTheContentLayout()) {
             List<String> portletIds = new ArrayList<>(layout.getPortletIds());
-            if(portletIds.contains(PORTLET_ID)){
+            if (portletIds.contains(PORTLET_ID)) {
                 continue;
             }
             portletIds.add(PORTLET_ID);
@@ -63,16 +67,12 @@ public class Activator extends GenericBundleActivator {
     }
 
 
+    public void stop(BundleContext context) {
 
-
-
-    public void stop ( BundleContext context )  {
-
-      unregisterPortlets();
+        unregisterPortlets();
         //Unregister all the bundle services
 
         //new FileMoverUtil().deleteFiles();
-
 
     }
 }
