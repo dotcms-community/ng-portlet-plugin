@@ -14,3 +14,5 @@ Thumbs.db
 
 # Frontend-maven-plugin downloaded node
 frontend/node/
+config.bat
+node_modules
